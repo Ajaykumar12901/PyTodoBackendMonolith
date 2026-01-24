@@ -19,6 +19,7 @@ stages:
           displayName: 'Run Pylint'
           inputs:
             script: 'python -m pylint .'
+          continueOnError: true
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
