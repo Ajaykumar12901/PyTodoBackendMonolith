@@ -10,15 +10,16 @@ stages:
         displayName: linting_superlinter
         steps:
         - task: CmdLine@2
+          displayName: 'Install Pylint'
           inputs:
             script: |
-              - script: |
-                    python -m pip install --upgrade pip
-                    pip install pylint
-                  displayName: 'Install Pylint'
-              - script: |
-                  pylint --rcfile=.pylintrc **/*.py
-                displayName: 'Run Pylint'
+              python -m pip install --upgrade pip
+              pip install pylint
+        - task: CmdLine@2
+          inputs:
+            script: |
+              pylint --rcfile=.pylintrc **/*.py
+              displayName: 'Run Pylint'
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
