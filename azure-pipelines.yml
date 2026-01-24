@@ -18,7 +18,7 @@ stages:
         - task: CmdLine@2
           displayName: 'Run Pylint'
           inputs:
-            script: 'python -m pylint --rcfile=.pylintrc .'
+            script: 'python -m pylint .'
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
