@@ -12,9 +12,13 @@ stages:
         - task: CmdLine@2
           inputs:
             script: |
-              curl -o python.exe https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe
-              python.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
-              python --version
+              - script: |
+                    python -m pip install --upgrade pip
+                    pip install pylint
+                  displayName: 'Install Pylint'
+              - script: |
+                  pylint --rcfile=.pylintrc **/*.py
+                displayName: 'Run Pylint'
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
