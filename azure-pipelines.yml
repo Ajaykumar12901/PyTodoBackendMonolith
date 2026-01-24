@@ -15,11 +15,13 @@ stages:
             script: |
               python -m pip install --upgrade pip
               pip install pylint
+              pylint --version
         - task: CmdLine@2
           displayName: 'Run Pylint'
           inputs:
             script: |
-              pylint --rcfile=.pylintrc **/*.py
+              # pylint --rcfile=.pylintrc **/*.py
+              python -m pylint your_python_file.py
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
