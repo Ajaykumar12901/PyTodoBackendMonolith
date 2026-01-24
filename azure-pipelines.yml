@@ -20,8 +20,7 @@ stages:
           displayName: 'Run Pylint'
           inputs:
             script: |
-              # pylint --rcfile=.pylintrc **/*.py
-              python -m pylint your_python_file.py
+              pylint --rcfile=.pylintrc **/*.py
   # - stage: 2nd_stage
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
