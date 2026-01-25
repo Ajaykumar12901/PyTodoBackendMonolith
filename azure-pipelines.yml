@@ -33,6 +33,14 @@ stages:
               npm install -g @sonar/scan
               sonar -D sonar.host.url=http://localhost:9000 -D sonar.token=sqp_4f149552c1b25439ecaecdd9f849c4ff675bc5d6 -D sonar.projectKey=Ajay_sonarqube
 
-  #   displayName: 3rd_stage
-  # - stage: 3rd_stage
-  #   displayName: 3rd_stage
+  - stage: publish
+    displayName: Publish
+    jobs:
+      - job: publish
+        displayName: publish artifects
+        steps:
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)'
+            artifact: 'Pytodobackend'
+            publishLocation: 'pipeline'
