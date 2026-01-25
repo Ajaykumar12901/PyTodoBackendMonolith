@@ -7,7 +7,7 @@ stages:
     displayName: linting_stage
     jobs:
       - job: linting
-        displayName: linting_superlinter
+        displayName: linting_pylint
         steps:
         - task: CmdLine@2
           displayName: 'Install Pylint'
@@ -20,7 +20,19 @@ stages:
           inputs:
             script: 'python -m pylint .'
           continueOnError: true
-  # - stage: 2nd_stage
+  - stage: sastscanning
+    displayName: Sast Scanning
+    jobs:
+      - job: sonarcube
+        displayName: Sonarcube scanning
+        steps:
+        - task: PowerShell@2
+          inputs:
+            targetType: 'inline'
+            script: |
+              npm install -g @sonar/scan
+              sonar -D sonar.host.url=http://localhost:9000 -D sonar.token=sqp_4f149552c1b25439ecaecdd9f849c4ff675bc5d6 -D sonar.projectKey=Ajay_sonarqube
+
   #   displayName: 3rd_stage
   # - stage: 3rd_stage
   #   displayName: 3rd_stage
