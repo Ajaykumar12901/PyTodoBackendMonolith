@@ -44,3 +44,47 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)'
             artifact: 'Pytodobackend'
             publishLocation: 'pipeline'
+  - stage: DeploymentToVm
+    displayName: Deployment to VM
+    jobs:
+      - deployment: 
+        environment:
+          name: BackendVm
+          resourceType: VirtualMachine
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'Pytodobackend'
+                  targetPath: '$(System.DefaultWorkingDirectory)'
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    sudo apt update
+                    sudo apt install -y python3-pip python3-venv curl gnupg2 unixodbc unixodbc-dev
+                    
+                    python3 -m venv myenv
+                    source myenv/bin/activate
+                    
+                    mkdir -p /home/samadmin/backend
+                    sudo cp -r $(System.DefaultWorkingDirectory)/* /home/samadmin/backend
+                    cd /home/samadmin/backend
+                    
+                    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | \
+                    sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+                    
+                    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] \
+                    https://packages.microsoft.com/ubuntu/22.04/prod jammy main" | \
+                    sudo tee /etc/apt/sources.list.d/mssql-release.list
+                    
+                    sudo apt update
+                    sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+                    
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    
+                    uvicorn app:app --host 0.0.0.0 --port 8000
