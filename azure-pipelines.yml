@@ -2,6 +2,10 @@ trigger: none
 
 pool: TerraPulse agent
 
+variables: 
+  - group: todobackend
+
+
 stages:
   - stage: linting
     displayName: linting_stage
@@ -32,7 +36,6 @@ stages:
             script: |
               npm install -g @sonar/scan
               sonar -D sonar.host.url=http://localhost:9000 -D sonar.token=sqp_4f149552c1b25439ecaecdd9f849c4ff675bc5d6 -D sonar.projectKey=Ajay_sonarqube
-
   - stage: publish
     displayName: Publish
     jobs:
@@ -40,6 +43,9 @@ stages:
         displayName: publish artifects
         steps:
         - task: PublishPipelineArtifact@1
+          displayName: Publish Artifects
+          env: 
+            connection_string: $(connection_string)
           inputs:
             targetPath: '$(System.DefaultWorkingDirectory)'
             artifact: 'Pytodobackend'
