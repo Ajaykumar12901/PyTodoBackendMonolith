@@ -44,8 +44,6 @@ stages:
         steps:
         - task: PublishPipelineArtifact@1
           displayName: Publish Artifects
-          env: 
-            connection_string: $(connection_string)
           inputs:
             targetPath: '$(System.DefaultWorkingDirectory)'
             artifact: 'Pytodobackend'
@@ -62,6 +60,8 @@ stages:
             deploy:
               steps:
               - task: DownloadPipelineArtifact@2
+                env: 
+                  connection_string: $(connection_string)
                 inputs:
                   buildType: 'current'
                   artifactName: 'Pytodobackend'
