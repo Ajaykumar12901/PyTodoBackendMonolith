@@ -61,7 +61,7 @@ stages:
               steps:
               - task: DownloadPipelineArtifact@2
                 env: 
-                  connection_string: $(connection_string)
+                  CONNECTION_STRING: $(CONNECTION_STRING)
                 inputs:
                   buildType: 'current'
                   artifactName: 'Pytodobackend'
