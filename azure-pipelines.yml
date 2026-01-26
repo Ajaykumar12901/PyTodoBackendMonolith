@@ -60,13 +60,15 @@ stages:
             deploy:
               steps:
               - task: DownloadPipelineArtifact@2
-                env: 
-                  CONNECTION_STRING: $(CONNECTION_STRING)
+                # env: 
+                #   CONNECTION_STRING: $(CONNECTION_STRING)
                 inputs:
                   buildType: 'current'
                   artifactName: 'Pytodobackend'
                   targetPath: '$(System.DefaultWorkingDirectory)'
               - task: Bash@3
+                env: 
+                  CONNECTION_STRING: $(CONNECTION_STRING)
                 inputs:
                   targetType: 'inline'
                   script: |
